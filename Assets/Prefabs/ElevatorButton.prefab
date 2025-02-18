@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 693093193734023366}
   serializedVersion: 2
   m_LocalRotation: {x: -0.70710677, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0075}
-  m_LocalScale: {x: 0.15, y: 0.05, z: 0.15}
+  m_LocalPosition: {x: 0.000000058928066, y: 0, z: -0.04319995}
+  m_LocalScale: {x: 0.13, y: 0.05, z: 0.13}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7349728781287634327}
@@ -134,7 +134,7 @@ Transform:
   m_GameObject: {fileID: 1013077266717118305}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.000000058928066, y: 0, z: -0.05069995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -229,8 +229,8 @@ Transform:
   m_GameObject: {fileID: 5477383456814278788}
   serializedVersion: 2
   m_LocalRotation: {x: -0.70710677, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0347}
-  m_LocalScale: {x: 0.22, y: 0.02, z: 0.22}
+  m_LocalPosition: {x: 0, y: 0, z: -0.016}
+  m_LocalScale: {x: 0.18, y: 0.02, z: 0.18}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7643933416585685952}
@@ -294,7 +294,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7643933416585685952}
-  - component: {fileID: 5513532279273855320}
+  - component: {fileID: 6564420354931370372}
   m_Layer: 0
   m_Name: ElevatorButton
   m_TagString: Untagged
@@ -320,7 +320,7 @@ Transform:
   - {fileID: 4814622648859206492}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5513532279273855320
+--- !u!114 &6564420354931370372
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -329,13 +329,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6579538839396500380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 204cde4c0498f8d41829f5374e91f7cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 32d9625e199a6194c94bf3cf54c5adcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 693093193734023366}
   lamp: {fileID: 4600051268770063197}
   offMat: {fileID: 2100000, guid: bfc70d6a21d50d54f84075f95f9fe0e6, type: 2}
   onMat: {fileID: 2100000, guid: 9a23d322aac8dc14f8406a21c73f0b1c, type: 2}
+  floorNumber: 0
+  elevator: {fileID: 0}
 --- !u!1 &9006855859005790117
 GameObject:
   m_ObjectHideFlags: 0

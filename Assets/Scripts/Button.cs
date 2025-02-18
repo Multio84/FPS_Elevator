@@ -12,8 +12,8 @@ public abstract class Button : MonoBehaviour, IInteractable
     Vector3 onPos;
     bool isPressed;
 
-    public int floorNumber;
-    public Elevator elevator;
+    [HideInInspector] public int floorNumber;
+    [HideInInspector] public Elevator elevator;
 
 
     private void Awake()

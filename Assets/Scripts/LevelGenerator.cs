@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public static LevelGenerator Instance;
     [SerializeField] Transform buildingRoot;
     [SerializeField] GameObject floorPrefab;
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject elevatorPrefab;
-    [SerializeField] int floorsNumber;
+    [Range(2, 99)] public int totalFloors;
     [SerializeField] int startFloor;
     static float floorHeight = 6f;
 
@@ -19,7 +20,14 @@ public class LevelGenerator : MonoBehaviour
 
     private void Awake()
     {
-        building = new Floor[floorsNumber];
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
+        GenerateLevel();
+    }
+
+    void GenerateLevel()
+    {
         GenerateBuilding();
         SpawnPlayer();
         SpawnElevator();
@@ -27,7 +35,9 @@ public class LevelGenerator : MonoBehaviour
 
     void GenerateBuilding()
     {
-        for (int i = 0; i < floorsNumber; i++)
+        building = new Floor[totalFloors];
+
+        for (int i = 0; i < totalFloors; i++)
         {
             GameObject floorObj = Instantiate(floorPrefab, buildingRoot);
             floorObj.transform.position += new Vector3(0, i * floorHeight, 0);
