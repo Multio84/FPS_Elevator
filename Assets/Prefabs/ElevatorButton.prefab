@@ -153,7 +153,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 0, b: 0.1296277, a: 1}
   m_Intensity: 100
-  m_Range: 0.15
+  m_Range: 0.1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 7643933416585685952}
   - component: {fileID: 5513532279273855320}
   m_Layer: 0
-  m_Name: Button
+  m_Name: ElevatorButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
