@@ -12,16 +12,14 @@ public abstract class Button : MonoBehaviour, IInteractable
     Vector3 offPos;
     Vector3 onPos;
     bool isPressed;
-
+    public Elevator elevator;
     [HideInInspector] public int floorNumber;
-    [HideInInspector] public Elevator elevator;
+
 
 
     protected virtual void Awake()
     {
         meshRenderer = button.GetComponent<MeshRenderer>();
-        if (meshRenderer is null)
-            Debug.Log("Null MR");
         offPos = button.transform.localPosition;
         onPos = offPos + new Vector3(0, 0, 0.03f);
         TurnOff();
@@ -39,18 +37,24 @@ public abstract class Button : MonoBehaviour, IInteractable
     void TurnOn()
     {
         lamp.enabled = true;
-        if (meshRenderer is null)
-            Debug.Log("Null MR");
         meshRenderer.material = onMat;
         button.transform.localPosition = onPos;
+        StartElevator();
     }
 
     void TurnOff()
     {
         lamp.enabled = false;
-        if (meshRenderer is null)
-            Debug.Log("Null MR");
         meshRenderer.material = offMat;
         button.transform.localPosition = offPos;
+    }
+
+    void StartElevator()
+    {
+        // if the elevator is not on the floor
+        if (elevator.transform != LevelGenerator.Instance.building[floorNumber - 1].transform)
+        {
+            elevator.MoveTo(floorNumber);
+        }
     }
 }

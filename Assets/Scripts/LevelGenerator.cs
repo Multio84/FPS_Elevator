@@ -15,7 +15,8 @@ public class LevelGenerator : MonoBehaviour
 
     Transform playerStartpoint;
     Transform elevatorStartpoint;
-    Floor[] building;
+    public Floor[] building;
+    public Elevator elevator;
 
 
     private void Awake()
@@ -30,7 +31,8 @@ public class LevelGenerator : MonoBehaviour
     {
         GenerateBuilding();
         SpawnPlayer();
-        SpawnElevator();
+        InitializeFloorCallButtons();
+        //SpawnElevator();
     }
 
     void GenerateBuilding()
@@ -47,17 +49,31 @@ public class LevelGenerator : MonoBehaviour
             floor.number = i + 1;
 
             if (i == startFloor - 1) playerStartpoint = floor.playerStartpoint;
-            if (i == 0) elevatorStartpoint = floor.elevatorStartpoint;
+            if (i == 0)
+            {
+                elevatorStartpoint = floor.elevatorStartpoint;
+                SpawnElevator();
+            }
+        }
+    }
+
+    void InitializeFloorCallButtons()
+    {
+        for (int i = 0; i < totalFloors; i++)
+        {
+            building[i].floorCallButton.floorNumber = i + 1;
+            building[i].floorCallButton.elevator = elevator;
         }
     }
 
     void SpawnPlayer()
     {
-        Instantiate(playerPrefab, playerStartpoint.position, Quaternion.identity);
+        var player = Instantiate(playerPrefab, playerStartpoint.position, Quaternion.identity);
     }
 
     void SpawnElevator()
     {
-        Instantiate(elevatorPrefab, elevatorStartpoint.position, Quaternion.identity);
+        var elevatorOgj = Instantiate(elevatorPrefab, elevatorStartpoint.position, Quaternion.identity);
+        elevator = elevatorOgj.GetComponent<Elevator>();
     }
 }

@@ -9,5 +9,4 @@ public class ElevatorButton : Button
     {
         base.Awake();
     }
-
 }
