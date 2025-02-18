@@ -17,11 +17,6 @@ public class PlayerInteraction : MonoBehaviour
     public float interactDistance = 3f;
 
 
-    private void Awake()
-    {
-
-    }
-
     void Update()
     {
         // Если нажата клавиша E

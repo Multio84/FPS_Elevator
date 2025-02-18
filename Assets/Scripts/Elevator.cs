@@ -32,9 +32,11 @@ public class Elevator : MonoBehaviour
             GameObject newButton = Instantiate(elevatorButtonPrefab, buttonsStartpoint);
             newButton.transform.localPosition = buttonPosition;
 
-            Button buttonComponent = newButton.GetComponent<Button>();
-            buttonComponent.floorNumber = floor;
+            ElevatorButton buttonComponent = newButton.GetComponent<ElevatorButton>();
+            //Button buttonComponent = newButton.GetComponent<Button>();
             buttonComponent.elevator = this;
+            buttonComponent.floorNumber = floor;
+            buttonComponent.buttonText.text = floor.ToString();
         }
     }
 }

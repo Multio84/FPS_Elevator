@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8442803734414014725}
   - component: {fileID: 207874316335700427}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295,6 +295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7643933416585685952}
   - component: {fileID: 6564420354931370372}
+  - component: {fileID: 7521403048653542473}
   m_Layer: 0
   m_Name: ElevatorButton
   m_TagString: Untagged
@@ -338,6 +339,49 @@ MonoBehaviour:
   onMat: {fileID: 2100000, guid: 9a23d322aac8dc14f8406a21c73f0b1c, type: 2}
   floorNumber: 0
   elevator: {fileID: 0}
+  buttonText: {fileID: 5760993417349766425}
+--- !u!23 &7521403048653542473
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6579538839396500380}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &9006855859005790117
 GameObject:
   m_ObjectHideFlags: 0

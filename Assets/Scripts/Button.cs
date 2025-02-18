@@ -1,6 +1,7 @@
 using UnityEngine;
 
 
+[RequireComponent(typeof(MeshRenderer))]
 public abstract class Button : MonoBehaviour, IInteractable
 {
     [SerializeField] GameObject button;
@@ -16,9 +17,11 @@ public abstract class Button : MonoBehaviour, IInteractable
     [HideInInspector] public Elevator elevator;
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         meshRenderer = button.GetComponent<MeshRenderer>();
+        if (meshRenderer is null)
+            Debug.Log("Null MR");
         offPos = button.transform.localPosition;
         onPos = offPos + new Vector3(0, 0, 0.03f);
         TurnOff();
@@ -36,6 +39,8 @@ public abstract class Button : MonoBehaviour, IInteractable
     void TurnOn()
     {
         lamp.enabled = true;
+        if (meshRenderer is null)
+            Debug.Log("Null MR");
         meshRenderer.material = onMat;
         button.transform.localPosition = onPos;
     }
@@ -43,6 +48,8 @@ public abstract class Button : MonoBehaviour, IInteractable
     void TurnOff()
     {
         lamp.enabled = false;
+        if (meshRenderer is null)
+            Debug.Log("Null MR");
         meshRenderer.material = offMat;
         button.transform.localPosition = offPos;
     }

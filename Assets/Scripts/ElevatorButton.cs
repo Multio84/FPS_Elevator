@@ -1,9 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using TMPro;
 
 
 public class ElevatorButton : Button
 {
+    public TextMeshPro buttonText;
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
 }
