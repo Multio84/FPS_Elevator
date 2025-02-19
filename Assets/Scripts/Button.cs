@@ -1,7 +1,6 @@
 using UnityEngine;
 
 
-[RequireComponent(typeof(MeshRenderer))]
 public abstract class Button : MonoBehaviour, IInteractable
 {
     [SerializeField] GameObject button;
@@ -24,15 +23,6 @@ public abstract class Button : MonoBehaviour, IInteractable
         TurnOff();
     }
 
-    //public virtual void Interact()
-    //{
-    //    isPressed = !isPressed;
-    //    if (isPressed)
-    //        TurnOn();
-    //    else
-    //        TurnOff();
-    //}
-
     public virtual void Interact()
     {
         if (!isPressed) TurnOn();
@@ -46,6 +36,7 @@ public abstract class Button : MonoBehaviour, IInteractable
         meshRenderer.material = onMat;
         button.transform.localPosition = onPos;
         isPressed = true;
+
         ButtonManager.pressedButton = this;
         StartElevator();
     }
@@ -63,9 +54,8 @@ public abstract class Button : MonoBehaviour, IInteractable
         elevator.MoveTo(floorNumber);
     }
 
-    public bool IsElevatorOnTheFloor()
+    bool IsElevatorOnTheFloor()
     {
-        //return transform == generator.building[floorNumber].elevatorStartpoint;
         return elevator.currentFloor == floorNumber;
     }
 }

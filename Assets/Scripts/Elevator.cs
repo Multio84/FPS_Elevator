@@ -1,19 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
 public class Elevator : MonoBehaviour
 {
     LevelGenerator generator;
-
     [SerializeField] Transform buttonsStartpoint;
     [SerializeField] GameObject elevatorButtonPrefab;
+    [SerializeField] TextMeshPro currentFloorText;
     float verticalButtonSpacing = 0.185f;
     float horizontalButtonSpacing = 0.24f;
-    float acceleration = 4f;
+    float acceleration = 5f;
     public int currentFloor = 0;
     public bool isMoving = false;
+
 
     void Awake()
     {
@@ -26,26 +27,27 @@ public class Elevator : MonoBehaviour
     {
         int totalFloors = generator.totalFloors;
 
-        for (int floor = 0; floor <= totalFloors; floor++)
+        for (int floor = 0; floor < totalFloors; floor++)
         {
             int column = floor / 10;
             int row = floor % 10;
             Vector3 buttonPosition = new Vector3(column * horizontalButtonSpacing, row * verticalButtonSpacing, 0f);
 
-            GameObject newButton = Instantiate(elevatorButtonPrefab, buttonsStartpoint);
-            newButton.transform.localPosition = buttonPosition;
+            GameObject buttonObj = Instantiate(elevatorButtonPrefab, buttonsStartpoint);
+            buttonObj.name = "Button_" + floor;
+            buttonObj.transform.localPosition = buttonPosition;
 
-            ElevatorButton buttonComponent = newButton.GetComponent<ElevatorButton>();
-            buttonComponent.elevator = this;
-            buttonComponent.floorNumber = floor;
-            buttonComponent.buttonText.text = floor.ToString();
+            ElevatorButton button = buttonObj.GetComponent<ElevatorButton>();
+            button.elevator = this;
+            button.floorNumber = floor;
+            button.buttonText.text = floor.ToString();
         }
     }
 
     public void MoveTo(int floorNumber)
     {
         isMoving = true;
-        Floor floor = LevelGenerator.Instance.building[floorNumber];
+        Floor floor = generator.building[floorNumber];
         Transform target = floor.elevatorStartpoint;
 
         StartCoroutine(AnimateElevator(target));
@@ -56,11 +58,10 @@ public class Elevator : MonoBehaviour
         float elevatorY = transform.position.y;
         int newFloor = Mathf.RoundToInt(elevatorY / LevelGenerator.FloorHeight);
 
-        if (newFloor != currentFloor)
-        {
+        if (currentFloor != newFloor)
             currentFloor = newFloor;
-            Debug.Log("Current floor is: " + currentFloor);
-        }
+
+        currentFloorText.text = currentFloor.ToString();
     }
 
     public IEnumerator AnimateElevator(Transform target)

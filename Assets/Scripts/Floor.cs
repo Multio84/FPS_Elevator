@@ -7,7 +7,7 @@ public class Floor : MonoBehaviour
     public Transform playerStartpoint;
     public Transform elevatorStartpoint;
     public FloorCallButton floorCallButton;
-    public Elevator elevator;
+    [HideInInspector] public Elevator elevator;
 
     [HideInInspector] public int number;
     [SerializeField] TextMeshPro numberText;
@@ -31,8 +31,4 @@ public class Floor : MonoBehaviour
     {
         elevatorCurrentFloorText.text = elevator.currentFloor.ToString();
     }
-
-
-
-
 }

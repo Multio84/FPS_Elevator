@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -10,10 +8,16 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] GameObject floorPrefab;
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject elevatorPrefab;
-    [Range(2, 100)] public int totalFloors;
-    public int playerStartFloor;
-    public int elevatorStartFloor;
+
     public const float FloorHeight = 6f;
+    const int MinFloor = 0;
+    const int MaxFloor = 99;
+    [Range(MinFloor + 2, MaxFloor + 1)] public int totalFloors;
+    [Tooltip("The Floor you will start from.\nFloors are numbered starting from zero")]
+    public int playerStartFloor;
+    [Tooltip("The Floor elevator will be spawned.\nFloors are numbered starting from zero")]
+    public int elevatorStartFloor;
+    
 
     [HideInInspector] public Floor[] building;
     [HideInInspector] public Elevator elevator;
@@ -27,6 +31,12 @@ public class LevelGenerator : MonoBehaviour
             Destroy(Instance);
 
         GenerateLevel();
+    }
+
+    void OnValidate()
+    {
+        playerStartFloor = Mathf.Clamp(playerStartFloor, MinFloor, totalFloors - 1);
+        elevatorStartFloor = Mathf.Clamp(elevatorStartFloor, MinFloor, totalFloors - 1);
     }
 
     void GenerateLevel()
@@ -77,6 +87,4 @@ public class LevelGenerator : MonoBehaviour
         var playerStartpoint = building[playerStartFloor].playerStartpoint;
         var player = Instantiate(playerPrefab, playerStartpoint.position, Quaternion.identity);
     }
-
-
 }
