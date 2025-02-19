@@ -11,11 +11,14 @@ public class Elevator : MonoBehaviour
     [SerializeField] GameObject elevatorButtonPrefab;
     float verticalButtonSpacing = 0.185f;
     float horizontalButtonSpacing = 0.24f;
-
+    float acceleration = 4f;
+    public int currentFloor = 0;
+    public bool isMoving = false;
 
     void Awake()
     {
         generator = LevelGenerator.Instance;
+        UpdateCurrentFloor();
         SpawnButtons();
     }
 
@@ -23,17 +26,16 @@ public class Elevator : MonoBehaviour
     {
         int totalFloors = generator.totalFloors;
 
-        for (int floor = 1; floor <= totalFloors; floor++)
+        for (int floor = 0; floor <= totalFloors; floor++)
         {
-            int column = (floor - 1) / 10;
-            int row = (floor - 1) % 10;
+            int column = floor / 10;
+            int row = floor % 10;
             Vector3 buttonPosition = new Vector3(column * horizontalButtonSpacing, row * verticalButtonSpacing, 0f);
 
             GameObject newButton = Instantiate(elevatorButtonPrefab, buttonsStartpoint);
             newButton.transform.localPosition = buttonPosition;
 
             ElevatorButton buttonComponent = newButton.GetComponent<ElevatorButton>();
-            //Button buttonComponent = newButton.GetComponent<Button>();
             buttonComponent.elevator = this;
             buttonComponent.floorNumber = floor;
             buttonComponent.buttonText.text = floor.ToString();
@@ -42,15 +44,24 @@ public class Elevator : MonoBehaviour
 
     public void MoveTo(int floorNumber)
     {
-        Floor floor = LevelGenerator.Instance.building[floorNumber - 1];
+        isMoving = true;
+        Floor floor = LevelGenerator.Instance.building[floorNumber];
         Transform target = floor.elevatorStartpoint;
 
         StartCoroutine(AnimateElevator(target));
     }
 
+    void UpdateCurrentFloor()
+    {
+        float elevatorY = transform.position.y;
+        int newFloor = Mathf.RoundToInt(elevatorY / LevelGenerator.FloorHeight);
 
-
-    public float acceleration = 4f;
+        if (newFloor != currentFloor)
+        {
+            currentFloor = newFloor;
+            Debug.Log("Current floor is: " + currentFloor);
+        }
+    }
 
     public IEnumerator AnimateElevator(Transform target)
     {
@@ -67,16 +78,20 @@ public class Elevator : MonoBehaviour
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            // Ќормированное врем€ t измен€етс€ от 0 до 1
             float t = Mathf.Clamp01(elapsed / duration);
             float easedT = (1f - Mathf.Cos(t * Mathf.PI)) / 2f;
 
             transform.position = Vector3.Lerp(startPos, targetPos, easedT);
+
+            UpdateCurrentFloor();
+
             yield return null;
         }
 
-        // ¬ конце гарантируем, что позици€ точно равна целевой.
         transform.position = targetPos;
+
+        isMoving = false;
+        ButtonManager.TurnOffPressedButton();
     }
 }
 

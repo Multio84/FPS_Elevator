@@ -12,9 +12,8 @@ public abstract class Button : MonoBehaviour, IInteractable
     Vector3 offPos;
     Vector3 onPos;
     bool isPressed;
-    public Elevator elevator;
+    [HideInInspector] public Elevator elevator;
     [HideInInspector] public int floorNumber;
-
 
 
     protected virtual void Awake()
@@ -25,36 +24,48 @@ public abstract class Button : MonoBehaviour, IInteractable
         TurnOff();
     }
 
+    //public virtual void Interact()
+    //{
+    //    isPressed = !isPressed;
+    //    if (isPressed)
+    //        TurnOn();
+    //    else
+    //        TurnOff();
+    //}
+
     public virtual void Interact()
     {
-        isPressed = !isPressed;
-        if (isPressed)
-            TurnOn();
-        else
-            TurnOff();
+        if (!isPressed) TurnOn();
     }
 
     void TurnOn()
     {
+        if (elevator.isMoving || IsElevatorOnTheFloor()) return;
+
         lamp.enabled = true;
         meshRenderer.material = onMat;
         button.transform.localPosition = onPos;
+        isPressed = true;
+        ButtonManager.pressedButton = this;
         StartElevator();
     }
 
-    void TurnOff()
+    public void TurnOff()
     {
         lamp.enabled = false;
         meshRenderer.material = offMat;
         button.transform.localPosition = offPos;
+        isPressed = false;
     }
 
     void StartElevator()
     {
-        // if the elevator is not on the floor
-        if (elevator.transform != LevelGenerator.Instance.building[floorNumber - 1].transform)
-        {
-            elevator.MoveTo(floorNumber);
-        }
+        elevator.MoveTo(floorNumber);
+    }
+
+    public bool IsElevatorOnTheFloor()
+    {
+        //return transform == generator.building[floorNumber].elevatorStartpoint;
+        return elevator.currentFloor == floorNumber;
     }
 }

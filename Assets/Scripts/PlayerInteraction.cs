@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
-// Интерфейс для интерактивных объектов
 public interface IInteractable
 {
     void Interact();
 }
-
 
 public class PlayerInteraction : MonoBehaviour
 {
