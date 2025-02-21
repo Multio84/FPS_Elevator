@@ -224,6 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 161885223592650249}
+  elevatorRoot: {fileID: 0}
 --- !u!54 &5999949815085155666
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -379,7 +380,7 @@ MonoBehaviour:
   sprint: 0
   analogMovement: 0
   cursorLocked: 1
-  cursorInputForLook: 1
+  cursorInputForLook: 0
 --- !u!114 &3805031799172953957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,7 +478,7 @@ MonoBehaviour:
   m_DefaultControlScheme: KeyboardMouse
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 8720516372532811382}
 --- !u!114 &7782652865705591141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,15 +779,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5694533519283154323, guid: 5df1c18b3586e8246aa4921e291c5692, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5694533519283154323, guid: 5df1c18b3586e8246aa4921e291c5692, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5694533519283154323, guid: 5df1c18b3586e8246aa4921e291c5692, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5694533519283154323, guid: 5df1c18b3586e8246aa4921e291c5692, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
