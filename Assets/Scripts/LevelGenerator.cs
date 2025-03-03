@@ -1,5 +1,5 @@
-using StarterAssets;
 using UnityEngine;
+
 
 [DefaultExecutionOrder(-20)]
 public class LevelGenerator : MonoBehaviour
@@ -13,17 +13,26 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] GameObject elevatorPrefab;
 
     [Header("Generation Settings")]
-    public const float FloorHeight = 6f;
+    public const float BlockWidth = 16f;
+    public const int MinBlocks = 1;
+    public const int MaxBlocks = 10;
+    public int blocksNumber = 1;
     public const int MinFloor = 0;
     public const int MaxFloor = 99;
-    [Range(MinFloor + 2, MaxFloor + 1)] public int totalFloors;
-    [Tooltip("The Floor you will start from.\nFloors are numbered starting from zero")]
-    public int playerStartFloor;
-    [Tooltip("The Floor elevator will be spawned.\nFloors are numbered starting from zero")]
-    public int elevatorStartFloor;
+    //[Range(MinFloor + 2, MaxFloor + 1)] public int floorsNumber = 2;
+    public int floorsNumber = 2;
+    //[Tooltip("The Floor you will start from.\nFloors are numbered starting from zero")]
+    public int playerStartFloor = 0;
+    //[Tooltip("The Floor elevator will be spawned.\nFloors are numbered starting from zero")]
+    public int elevatorStartFloor = 0;
 
-    [HideInInspector] public Floor[] building;
-    [HideInInspector] public Elevator elevator;
+    [HideInInspector] Block[] building;
+
+    //void OnValidate()
+    //{
+    //    playerStartFloor = Mathf.Clamp(playerStartFloor, MinFloor, floorsNumber - 1);
+    //    elevatorStartFloor = Mathf.Clamp(elevatorStartFloor, MinFloor, floorsNumber - 1);
+    //}
 
 
     void Awake()
@@ -31,60 +40,40 @@ public class LevelGenerator : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else
-            Destroy(Instance);
-    }
-
-    void OnValidate()
-    {
-        playerStartFloor = Mathf.Clamp(playerStartFloor, MinFloor, totalFloors - 1);
-        elevatorStartFloor = Mathf.Clamp(elevatorStartFloor, MinFloor, totalFloors - 1);
+            Destroy(gameObject);
     }
 
     public void GenerateLevel()
     {
-        ConstructBuilding();
-        SpawnElevator();
-        InitializeFloors();
-    }
+        if (building != null) 
+            DemolishBuilding();
+        
+        building = new Block[blocksNumber];
 
-    void ConstructBuilding()
-    {
-        building = new Floor[totalFloors];
-
-        for (int i = 0; i < totalFloors; i++)
+        for (int i = 0; i < blocksNumber; i++)
         {
-            GameObject floorObj = Instantiate(floorPrefab, buildingRoot);
-            floorObj.transform.position += new Vector3(0, i * FloorHeight, 0);
-            floorObj.name = "Floor_" + i;
+            Vector3 blockPos = buildingRoot.position + new Vector3(i * BlockWidth, 0, 0);
+            GameObject blockRoot = new GameObject($"Block_{i}");
+            blockRoot.transform.position = blockPos;
+            blockRoot.transform.SetParent(buildingRoot);
 
-            building[i] = floorObj.GetComponent<Floor>();
+            Block block = new Block(blockRoot.transform, floorPrefab, elevatorPrefab, floorsNumber, elevatorStartFloor);
+            building[i] = block;
         }
     }
 
-    // call it after elevator spawning
-    void InitializeFloors()
+    void DemolishBuilding()
     {
-        for (int i = 0; i < totalFloors; i++)
+        foreach (Block block in building)
         {
-            var floor = building[i];
-
-            floor.SetNumber(i);
-            floor.elevator = elevator;
-            floor.floorCallButton.floorNumber = i;
-            floor.floorCallButton.elevator = elevator;
+            Destroy(block.blockRoot.gameObject);
         }
-    }
-
-    void SpawnElevator()
-    {
-        var startpoint = building[elevatorStartFloor].elevatorStartpoint;
-        var elevatorObj = Instantiate(elevatorPrefab, startpoint.position, Quaternion.identity);
-        elevator = elevatorObj.GetComponent<Elevator>();
     }
 
     public GameObject SpawnPlayer()
     {
-        var playerStartpoint = building[playerStartFloor].playerStartpoint;
-        return Instantiate(playerPrefab, playerStartpoint.position, Quaternion.identity);
+        var playerStartpoint = building[0].Floors[playerStartFloor].playerStartpoint;
+        return Instantiate(playerPrefab, playerStartpoint);
     }
+
 }

@@ -1,13 +1,13 @@
 using StarterAssets;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 [DefaultExecutionOrder(-10)]
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
     public static GameObject player;
-    [SerializeField] GameObject uiWindowPrefab;
-    [SerializeField] GameObject uiCanvas;
     bool isCursorActive;
     bool IsCursorActive
     {
@@ -15,38 +15,90 @@ public class GameManager : MonoBehaviour
         set
         {
             isCursorActive = value;
-            StarterAssetsInputs inputs = null;
+            MyStarterAssetsInputs inputs = null;
             if (player != null)
-                inputs = player.GetComponent<StarterAssetsInputs>();
+                inputs = player.GetComponent<MyStarterAssetsInputs>();
 
             if (inputs != null)
             {
                 inputs.cursorLocked = !value;
                 inputs.cursorInputForLook = !value;
+                Cursor.visible = value;
             }
         }
     }
 
 
-    private void Awake()
+    void Awake()
     {
-        Initialize();
-        OpenWindow();
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
+        GenerateGame();
+        PauseGame(true);
     }
 
-    private void Initialize()
+    private void Start()
     {
-        var generator = LevelGenerator.Instance;
-        generator.GenerateLevel();
-        player = generator.SpawnPlayer();
+        SubscribeToUIManager();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromUIManager();
+    }
+
+    public void GenerateGame()
+    {
+        LevelGenerator.Instance.GenerateLevel();
+
+        if (player == null)
+            player = LevelGenerator.Instance.SpawnPlayer();
+        else
+            DetachPlayer();
+    }
+
+    void DetachPlayer()
+    {
+        player.transform.SetParent(null);
+    }
+
+    void SubscribeToUIManager()
+    {
+        UIManager.Instance.OnMenuActive += OnMenuActive;
+        UIManager.Instance.OnMenuInactive += OnMenuInactive;
+    }
+
+    void UnsubscribeFromUIManager()
+    {
+        UIManager.Instance.OnMenuActive -= OnMenuActive;
+        UIManager.Instance.OnMenuInactive -= OnMenuInactive;
+    }
+
+    void OnMenuActive()
+    {
         IsCursorActive = true;
+        PauseGame(true);
     }
 
-    public void OpenWindow()
+    void OnMenuInactive()
     {
-        if (uiWindowPrefab != null && uiCanvas != null)
+        IsCursorActive = false;
+        PauseGame(false);
+    }
+
+    public void PauseGame(bool pause)
+    {
+        Time.timeScale = pause ? 0f : 1f;
+
+        var playerInput = player.GetComponent<PlayerInput>();
+        if (playerInput != null)
         {
-            Instantiate(uiWindowPrefab, uiCanvas.transform, false);
+            if (pause)
+                playerInput.DeactivateInput();
+            else
+                playerInput.ActivateInput();
         }
     }
+
 }

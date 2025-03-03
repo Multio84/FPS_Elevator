@@ -12,6 +12,7 @@ public class Elevator : MonoBehaviour
     float verticalButtonSpacing = 0.185f;
     float horizontalButtonSpacing = 0.24f;
     float acceleration = 5f;
+    public Block blockOwner;    // the block to which the elevator belongs
     public int currentFloor = 0;
     public bool isMoving = false;
 
@@ -25,7 +26,7 @@ public class Elevator : MonoBehaviour
 
     public void SpawnButtons()
     {
-        int totalFloors = generator.totalFloors;
+        int totalFloors = generator.floorsNumber;
 
         for (int floor = 0; floor < totalFloors; floor++)
         {
@@ -47,7 +48,7 @@ public class Elevator : MonoBehaviour
     public void MoveTo(int floorNumber)
     {
         isMoving = true;
-        Floor floor = generator.building[floorNumber];
+        Floor floor = blockOwner.Floors[floorNumber];
         Transform target = floor.elevatorStartpoint;
 
         StartCoroutine(AnimateElevator(target));
@@ -56,7 +57,7 @@ public class Elevator : MonoBehaviour
     void UpdateCurrentFloor()
     {
         float elevatorY = transform.position.y;
-        int newFloor = Mathf.RoundToInt(elevatorY / LevelGenerator.FloorHeight);
+        int newFloor = Mathf.RoundToInt(elevatorY / Block.FloorHeight);
 
         if (currentFloor != newFloor)
             currentFloor = newFloor;

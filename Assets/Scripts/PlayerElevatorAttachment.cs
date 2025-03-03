@@ -6,12 +6,18 @@ public class PlayerElevatorAttachment : MonoBehaviour
     public Transform player;
     public Transform elevatorRoot;
 
-    private void Awake()
+
+    void Awake()
+    {
+        Init();
+    }
+
+    public void Init()
     {
         elevatorRoot = GameObject.Find("ElevatorRoot").transform;
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Elevator"))
         {
@@ -19,7 +25,7 @@ public class PlayerElevatorAttachment : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Elevator"))
         {

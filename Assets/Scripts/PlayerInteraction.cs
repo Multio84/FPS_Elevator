@@ -6,6 +6,7 @@ public interface IInteractable
     void Interact();
 }
 
+
 public class PlayerInteraction : MonoBehaviour
 {
     public float interactDistance = 3f;
