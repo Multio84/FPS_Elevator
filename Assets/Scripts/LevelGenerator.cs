@@ -72,8 +72,14 @@ public class LevelGenerator : MonoBehaviour
 
     public GameObject SpawnPlayer()
     {
-        var playerStartpoint = building[0].Floors[playerStartFloor].playerStartpoint;
-        return Instantiate(playerPrefab, playerStartpoint);
+        var player = Instantiate(playerPrefab);
+        PlacePlayer(player);
+        return player;
+    }
+
+    public void PlacePlayer(GameObject player)
+    {
+        player.transform.position = building[0].Floors[playerStartFloor].playerStartpoint.position;
     }
 
 }
