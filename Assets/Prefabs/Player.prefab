@@ -224,7 +224,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 161885223592650249}
-  elevatorRoot: {fileID: 0}
 --- !u!54 &5999949815085155666
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -492,6 +491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactDistance: 3
+  tooltip: {fileID: 5622225912842389592}
 --- !u!1 &5118838205380868917
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,7 +596,7 @@ GameObject:
   - component: {fileID: 7198603377635386061}
   - component: {fileID: 5300464443329871554}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Tooltip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -676,8 +676,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

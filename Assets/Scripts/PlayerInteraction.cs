@@ -9,25 +9,31 @@ public interface IInteractable
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactDistance = 3f;
+    [SerializeField] float interactDistance = 3f;
+    [SerializeField] GameObject tooltip;
 
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-            RaycastHit hit;
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, interactDistance))
+        if (Physics.Raycast(ray, out hit, interactDistance))
+        {
+            IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
+            if (interactable != null)
             {
-                IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
-                if (interactable != null)
+                tooltip.SetActive(true);
+
+                if (Input.GetKeyDown(KeyCode.E))
                 {
                     interactable.Interact();
                 }
             }
+            else
+            {
+                tooltip.SetActive(false);
+            }
         }
     }
-
 }
