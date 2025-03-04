@@ -16,16 +16,16 @@ public class MenuWindow : MonoBehaviour
     int ElevatorsNumber => generator.blocksNumber;
 
     [SerializeField] Slider floorsSlider;
-    [SerializeField] TMP_InputField floorsInputField;
+    [SerializeField] TMP_InputField floorsInput;
 
     [SerializeField] Slider playerStartSlider;
-    [SerializeField] TMP_InputField playerStartInputField;
+    [SerializeField] TMP_InputField playerStartInput;
 
     [SerializeField] Slider elevatorStartSlider;
-    [SerializeField] TMP_InputField elevatorStartInputField;
+    [SerializeField] TMP_InputField elevatorStartInput;
 
     [SerializeField] Slider elevatorsSlider;
-    [SerializeField] TMP_InputField elevatorsInputField;
+    [SerializeField] TMP_InputField elevatorsInput;
 
     [SerializeField] UnityEngine.UI.Button generateButton;
     [SerializeField] UnityEngine.UI.Button quitButton;
@@ -35,21 +35,21 @@ public class MenuWindow : MonoBehaviour
     {
         generator = LevelGenerator.Instance;
 
-        InitProperty(floorsSlider, floorsInputField, MinFloor + 2, MaxFloor + 1, FloorsNumber);
+        InitProperty(floorsSlider, floorsInput, MinFloor + 2, MaxFloor + 1, FloorsNumber);
         floorsSlider.onValueChanged.AddListener(OnFloorsSliderChanged);
-        floorsInputField.onEndEdit.AddListener(OnFloorsInputFieldChanged);
+        floorsInput.onEndEdit.AddListener(OnFloorsInputFieldChanged);
 
-        InitProperty(playerStartSlider, playerStartInputField, MinFloor, (int)floorsSlider.value - 1, PlayerStart);
+        InitProperty(playerStartSlider, playerStartInput, MinFloor, (int)floorsSlider.value - 1, PlayerStart);
         playerStartSlider.onValueChanged.AddListener(OnPlayerStartSliderChanged);
-        playerStartInputField.onEndEdit.AddListener(OnPlayerStartInputFieldChanged);
+        playerStartInput.onEndEdit.AddListener(OnPlayerStartInputFieldChanged);
 
-        InitProperty(elevatorStartSlider, elevatorStartInputField, MinFloor, (int)floorsSlider.value - 1, ElevatorStart);
+        InitProperty(elevatorStartSlider, elevatorStartInput, MinFloor, (int)floorsSlider.value - 1, ElevatorStart);
         elevatorStartSlider.onValueChanged.AddListener(OnElevatorStartSliderChanged);
-        elevatorStartInputField.onEndEdit.AddListener(OnElevatorStartInputFieldChanged);
+        elevatorStartInput.onEndEdit.AddListener(OnElevatorStartInputFieldChanged);
 
-        InitProperty(elevatorsSlider, elevatorsInputField, MinBlocks, MaxBlocks, ElevatorsNumber);
+        InitProperty(elevatorsSlider, elevatorsInput, MinBlocks, MaxBlocks, ElevatorsNumber);
         elevatorsSlider.onValueChanged.AddListener(OnElevatorsSliderChanged);
-        elevatorsInputField.onEndEdit.AddListener(OnElevatorsInputFieldChanged);
+        elevatorsInput.onEndEdit.AddListener(OnElevatorsInputFieldChanged);
 
         generateButton.onClick.AddListener(OnGenerateButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
@@ -65,44 +65,44 @@ public class MenuWindow : MonoBehaviour
 
     void OnFloorsSliderChanged(float value)
     {
-        generator.floorsNumber = ProcessInputField(floorsInputField, value);
+        generator.floorsNumber = ProcessInputField(floorsInput, value);
         SetMaxFloor();
     }
 
     void OnFloorsInputFieldChanged(string input)
     {
-        generator.floorsNumber = ProcessSlider(floorsSlider, floorsInputField, input, MinFloor + 2, MaxFloor + 1);
+        generator.floorsNumber = ProcessSlider(floorsSlider, floorsInput, input, MinFloor + 2, MaxFloor + 1);
         SetMaxFloor();
     }
 
     void OnPlayerStartSliderChanged(float value)
     {
-        generator.playerStartFloor = ProcessInputField(playerStartInputField, value);
+        generator.playerStartFloor = ProcessInputField(playerStartInput, value);
     }
 
     void OnPlayerStartInputFieldChanged(string input)
     {
-        generator.playerStartFloor = ProcessSlider(playerStartSlider, playerStartInputField, input, MinFloor, (int)floorsSlider.value);
+        generator.playerStartFloor = ProcessSlider(playerStartSlider, playerStartInput, input, MinFloor, (int)floorsSlider.value);
     }
 
     void OnElevatorStartSliderChanged(float value)
     {
-        generator.elevatorStartFloor = ProcessInputField(elevatorStartInputField, value);
+        generator.elevatorStartFloor = ProcessInputField(elevatorStartInput, value);
     }
 
     void OnElevatorStartInputFieldChanged(string input)
     {
-        generator.elevatorStartFloor = ProcessSlider(elevatorStartSlider, elevatorStartInputField, input, MinFloor, (int)floorsSlider.value);
+        generator.elevatorStartFloor = ProcessSlider(elevatorStartSlider, elevatorStartInput, input, MinFloor, (int)floorsSlider.value);
     }
 
     void OnElevatorsSliderChanged(float value)
     {
-        generator.blocksNumber = ProcessInputField(elevatorsInputField, value);
+        generator.blocksNumber = ProcessInputField(elevatorsInput, value);
     }
 
     void OnElevatorsInputFieldChanged(string input)
     {
-        generator.blocksNumber = ProcessSlider(elevatorsSlider, elevatorsInputField, input, MinBlocks, MaxBlocks);
+        generator.blocksNumber = ProcessSlider(elevatorsSlider, elevatorsInput, input, MinBlocks, MaxBlocks);
     }
 
     // change start player & elevator sliders max value
@@ -113,9 +113,6 @@ public class MenuWindow : MonoBehaviour
 
         playerStartSlider.maxValue = currentMaxFloor;
         elevatorStartSlider.maxValue = currentMaxFloor;
-
-        generator.playerStartFloor = currentMaxFloor;
-        generator.elevatorStartFloor = currentMaxFloor;
     }
 
     int ProcessInputField(TMP_InputField field, float value)

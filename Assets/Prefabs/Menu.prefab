@@ -660,13 +660,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floorsSlider: {fileID: 4111675181249318552}
-  floorsInputField: {fileID: 2380407709551760323}
+  floorsInput: {fileID: 2380407709551760323}
   playerStartSlider: {fileID: 8310520514663486883}
-  playerStartInputField: {fileID: 6591862800597665836}
+  playerStartInput: {fileID: 6591862800597665836}
   elevatorStartSlider: {fileID: 8538867491982339950}
-  elevatorStartInputField: {fileID: 2379304357804169076}
+  elevatorStartInput: {fileID: 2379304357804169076}
   elevatorsSlider: {fileID: 8979114920111955641}
-  elevatorsInputField: {fileID: 3104265446173571768}
+  elevatorsInput: {fileID: 3104265446173571768}
   generateButton: {fileID: 1257193507347029261}
   quitButton: {fileID: 21019516092863381}
 --- !u!1 &1258853120061883192
