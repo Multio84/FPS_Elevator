@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 
@@ -7,6 +8,8 @@ public abstract class Button : MonoBehaviour, IInteractable
     [SerializeField] Light lamp;
     [SerializeField] Material offMat;
     [SerializeField] Material onMat;
+    // seconds, before button turns off, if it can't be turned on
+    const float AutoTurnOffTime = 0.35f;
     MeshRenderer meshRenderer;
     Vector3 offPos;
     Vector3 onPos;
@@ -30,11 +33,15 @@ public abstract class Button : MonoBehaviour, IInteractable
 
     void TurnOn()
     {
-        if (elevator.isMoving || IsElevatorOnTheFloor()) return;
+        Press(true);
 
-        lamp.enabled = true;
-        meshRenderer.material = onMat;
-        button.transform.localPosition = onPos;
+        if (elevator.isMoving || IsElevatorOnTheFloor())
+        {
+            // button turns off soon automatically
+            StartCoroutine(UnpressWithDelay());
+            return;
+        }
+
         isPressed = true;
 
         ButtonManager.pressedButton = this;
@@ -43,10 +50,32 @@ public abstract class Button : MonoBehaviour, IInteractable
 
     public void TurnOff()
     {
-        lamp.enabled = false;
-        meshRenderer.material = offMat;
-        button.transform.localPosition = offPos;
+        Press(false);
+
         isPressed = false;
+    }
+
+    IEnumerator UnpressWithDelay()
+    {
+        yield return new WaitForSeconds(AutoTurnOffTime);
+
+        Press(false);
+    }
+
+    void Press(bool isPressed)
+    {
+        lamp.enabled = isPressed;
+
+        if (isPressed)
+        {   
+            meshRenderer.material = onMat;
+            button.transform.localPosition = onPos;
+        }
+        else
+        {
+            meshRenderer.material = offMat;
+            button.transform.localPosition = offPos;
+        }
     }
 
     void StartElevator()
