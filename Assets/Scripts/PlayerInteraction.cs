@@ -11,10 +11,18 @@ public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] float interactDistance = 3f;
     [SerializeField] GameObject tooltip;
+    bool isMenuMode = true;
 
+    void Start()
+    {
+        UIManager.Instance.OnMenuActive += OnMenuActive;
+        UIManager.Instance.OnMenuInactive += OnMenuInactive;
+    }
 
     void Update()
     {
+        if (isMenuMode) return;
+
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHit hit;
 
@@ -36,4 +44,16 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
+
+    void OnMenuActive()
+    {
+        isMenuMode = true;
+        tooltip.SetActive(false);
+    }
+
+    void OnMenuInactive()
+    {
+        isMenuMode = false;
+    }
+
 }
