@@ -6,18 +6,27 @@ public class Block
     public Floor[] Floors { get; private set; }
     public Elevator Elevator { get; private set; }
 
-    public Transform blockRoot;
+    public GameObject BlockRoot {  get; private set; }
     GameObject floorPrefab;
+    GameObject basementPrefab;
     GameObject elevatorPrefab;
     public const float FloorHeight = 6f;
     int floorsNumber;
     int elevatorStartFloor;
 
 
-    public Block(Transform blockRoot, GameObject floorPrefab, GameObject elevatorPrefab, int floorsNumber, int elevatorStartFloor)
+    public Block(
+        GameObject blockRoot, 
+        GameObject floorPrefab, 
+        GameObject basementPrefab, 
+        GameObject elevatorPrefab, 
+        int floorsNumber, 
+        int elevatorStartFloor
+        )
     {
-        this.blockRoot = blockRoot;
+        this.BlockRoot = blockRoot;
         this.floorPrefab = floorPrefab;
+        this.basementPrefab = basementPrefab;
         this.elevatorPrefab = elevatorPrefab;
         this.floorsNumber = floorsNumber;
         this.elevatorStartFloor = elevatorStartFloor;
@@ -29,11 +38,13 @@ public class Block
 
     void ConstructBlock()
     {
+        Object.Instantiate(basementPrefab, BlockRoot.transform);
+
         Floors = new Floor[floorsNumber];
 
         for (int i = 0; i < floorsNumber; i++)
         {
-            GameObject floorObj = Object.Instantiate(floorPrefab, blockRoot);
+            GameObject floorObj = Object.Instantiate(floorPrefab, BlockRoot.transform);
             floorObj.transform.position += new Vector3(0, i * FloorHeight, 0);
             floorObj.name = "Floor_" + i;
 
@@ -46,7 +57,7 @@ public class Block
         var startpoint = Floors[elevatorStartFloor].elevatorStartpoint;
         var elevatorObj = Object.Instantiate(elevatorPrefab, startpoint.position, Quaternion.identity, startpoint);
         Elevator = elevatorObj.GetComponent<Elevator>();
-        Elevator.blockOwner = this;
+        Elevator.block = this;
     }
 
     // call it after elevator spawning

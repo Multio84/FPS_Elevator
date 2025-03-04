@@ -12,7 +12,7 @@ public class Elevator : MonoBehaviour
     float verticalButtonSpacing = 0.185f;
     float horizontalButtonSpacing = 0.24f;
     float acceleration = 5f;
-    public Block blockOwner;    // the block to which the elevator belongs
+    public Block block;    // the block to which the elevator belongs
     public int currentFloor = 0;
     public bool isMoving = false;
 
@@ -48,7 +48,7 @@ public class Elevator : MonoBehaviour
     public void MoveTo(int floorNumber)
     {
         isMoving = true;
-        Floor floor = blockOwner.Floors[floorNumber];
+        Floor floor = block.Floors[floorNumber];
         Transform target = floor.elevatorStartpoint;
 
         StartCoroutine(AnimateElevator(target));

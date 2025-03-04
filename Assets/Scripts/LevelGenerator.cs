@@ -9,6 +9,7 @@ public class LevelGenerator : MonoBehaviour
     [Header("Generation Objects")]
     [SerializeField] Transform buildingRoot;
     [SerializeField] GameObject floorPrefab;
+    [SerializeField] GameObject basementPrefab;
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject elevatorPrefab;
 
@@ -57,7 +58,7 @@ public class LevelGenerator : MonoBehaviour
             blockRoot.transform.position = blockPos;
             blockRoot.transform.SetParent(buildingRoot);
 
-            Block block = new Block(blockRoot.transform, floorPrefab, elevatorPrefab, floorsNumber, elevatorStartFloor);
+            Block block = new Block(blockRoot, floorPrefab, basementPrefab, elevatorPrefab, floorsNumber, elevatorStartFloor);
             building[i] = block;
         }
     }
@@ -66,7 +67,7 @@ public class LevelGenerator : MonoBehaviour
     {
         foreach (Block block in building)
         {
-            Destroy(block.blockRoot.gameObject);
+            Destroy(block.BlockRoot);
         }
     }
 

@@ -198,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingRoot: {fileID: 316238464}
   floorPrefab: {fileID: 7639710319071165775, guid: e9fb41f08bfd10146b7baf9a5c7c7230, type: 3}
+  basementPrefab: {fileID: 9086542741549307638, guid: 180578a2800232c4abbc5b8fde2a720b, type: 3}
   playerPrefab: {fileID: 4913041066077494299, guid: 6781e40b2cd0e0441aeb2f04a8e82713, type: 3}
   elevatorPrefab: {fileID: 8728775552928871516, guid: 072bbc6be54ab594a88dc0fb12136cb6, type: 3}
   blocksNumber: 2
