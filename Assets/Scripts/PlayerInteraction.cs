@@ -19,6 +19,12 @@ public class PlayerInteraction : MonoBehaviour
         UIManager.Instance.OnMenuInactive += OnMenuInactive;
     }
 
+    void OnDisable()
+    {
+        UIManager.Instance.OnMenuActive -= OnMenuActive;
+        UIManager.Instance.OnMenuInactive -= OnMenuInactive;
+    }
+
     void Update()
     {
         if (isMenuMode) return;

@@ -160,7 +160,8 @@ PlayerSettings:
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Standalone: com.DefaultCompany.FPS-Elevator
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -768,8 +769,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: FPS_Elevator
-  metroPackageVersion: 
+  metroPackageName: FPSElevator
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -777,7 +778,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: FPS_Elevator
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: FPS_Elevator
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0

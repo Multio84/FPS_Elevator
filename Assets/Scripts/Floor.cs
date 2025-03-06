@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Floor : MonoBehaviour
 {
+    public GameObject rootObj;
     public Transform playerStartpoint;
     public Transform elevatorStartpoint;
     public FloorCallButton floorCallButton;

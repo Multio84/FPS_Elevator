@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
             player = LevelGenerator.Instance.SpawnPlayer();
         else
             DetachPlayer();
-            LevelGenerator.Instance.PlacePlayer(player);
+        LevelGenerator.Instance.PlacePlayer(player);
     }
 
     void DetachPlayer()
