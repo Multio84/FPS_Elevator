@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
             player = LevelGenerator.Instance.SpawnPlayer();
         else
             DetachPlayer();
+
         LevelGenerator.Instance.PlacePlayer(player);
     }
 
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame(bool pause)
     {
-        Time.timeScale = pause ? 0f : 1f;
+        //Time.timeScale = pause ? 0f : 1f;
 
         var playerInput = player.GetComponent<PlayerInput>();
         if (playerInput != null)

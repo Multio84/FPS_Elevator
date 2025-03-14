@@ -1,81 +1,156 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System.Threading.Tasks;
 
 
+[DefaultExecutionOrder(-20)]
 public class ObjectCombiner : MonoBehaviour
 {
+    public static ObjectCombiner Instance;
+    public static string tagToCombine = "Combine";
 
-    // Функция объединения всех MeshFilter'ов, найденных в дочерних объектах parent.
-    // Если destroyOriginal == true, то оригинальные объекты будут отключены.
-    public static void CombineMeshes(GameObject parent, bool destroyOriginal = true)
+
+    void Awake()
     {
-        MeshFilter[] meshFilters = parent.GetComponentsInChildren<MeshFilter>();
-
-        // Сгруппируем объекты по материалу. Ключ – материал, значение – список CombineInstance.
-        Dictionary<Material, List<CombineInstance>> combineByMaterial = new Dictionary<Material, List<CombineInstance>>();
-
-        foreach (MeshFilter mf in meshFilters)
-        {
-            // skip parent's MeshFilter
-            if (mf.transform == parent.transform)
-                continue;
-
-            MeshRenderer mr = mf.GetComponent<MeshRenderer>();
-            if (mr == null)
-                continue;
-
-            Material mat = mr.sharedMaterial;
-            if (!combineByMaterial.ContainsKey(mat))
-            {
-                combineByMaterial[mat] = new List<CombineInstance>();
-            }
-
-            // Создаем CombineInstance для данного меша.
-            CombineInstance ci = new CombineInstance();
-            ci.mesh = mf.sharedMesh;
-            // Матрица преобразования переводит координаты из локальных координат объекта в систему координат parent.
-            ci.transform = parent.transform.worldToLocalMatrix * mf.transform.localToWorldMatrix;
-            combineByMaterial[mat].Add(ci);
-        }
-
-        // Для каждого материала создадим новый объект с объединенным мешем.
-        foreach (KeyValuePair<Material, List<CombineInstance>> pair in combineByMaterial)
-        {
-            Material mat = pair.Key;
-            List<CombineInstance> combineInstances = pair.Value;
-
-            Mesh combinedMesh = new Mesh();
-            // Параметр mergeSubMeshes = true – объединяем в один сабмеш, так как все экземпляры используют один и тот же материал.
-            combinedMesh.CombineMeshes(combineInstances.ToArray(), true, true);
-
-            // Создаем новый дочерний объект для объединенного меша.
-            GameObject combinedObject = new GameObject("CombinedMesh_" + mat.name);
-            combinedObject.transform.SetParent(parent.transform);
-            combinedObject.transform.localPosition = Vector3.zero;
-            combinedObject.transform.localRotation = Quaternion.identity;
-            combinedObject.transform.localScale = Vector3.one;
-
-            // Назначаем компонент MeshFilter и его меш.
-            MeshFilter mfCombined = combinedObject.AddComponent<MeshFilter>();
-            mfCombined.mesh = combinedMesh;
-            // Создаем MeshRenderer и назначаем материал.
-            MeshRenderer mrCombined = combinedObject.AddComponent<MeshRenderer>();
-            mrCombined.material = mat;
-        }
-
-        // Отключаем (или, по желанию, уничтожаем) оригинальные объекты, чтобы избежать двойной отрисовки.
-        if (destroyOriginal)
-        {
-            foreach (MeshFilter mf in meshFilters)
-            {
-                // Чтобы случайно не отключить parent, проверяем, что объект не == родительскому.
-                if (mf.gameObject != parent)
-                {
-                    mf.gameObject.SetActive(false);
-                }
-            }
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Combines the tagged as 'tagToCombine' child objects of the sourceRoot into one, 
+    /// if they have MeshFilter, MeshRenderer and the same material.
+    /// Also copies their BoxColliders to new empty childs, if original object had non-zero rotation.
+    /// All tagged objects are deleted after combination.
+    /// </summary>
+    /// <param name="sourceRoot">Parent object, whose childs will be combined.</param>
+    /// <param name="prefix">Name prefix of the new combined object</param>
+    /// <param name="destroyOriginal">Destroys the original objects, if true, else - disables them.</param>
+    public void CombineObjectsByTag(GameObject sourceRoot, string prefix, bool destroyOriginal = true)
+    {
+        // original objects to delete/disable in th end
+        List<GameObject> objectsToCombine = new List<GameObject>();
+        // objects to combine
+        var combineInstancesByMat = new Dictionary<Material, List<CombineInstance>>();
+        Transform[] children = sourceRoot.GetComponentsInChildren<Transform>(true);
 
+        foreach (Transform child in children)
+        {
+            if (!child.CompareTag(tagToCombine) || child == sourceRoot.transform)
+                continue;
+            objectsToCombine.Add(child.gameObject); // add all objects that have the correct tag
+
+            MeshFilter mf = child.GetComponent<MeshFilter>();
+            if (mf == null || mf.sharedMesh == null)
+                continue;
+            MeshRenderer mr = child.GetComponent<MeshRenderer>();
+            if (mr == null)
+                continue;
+            Material mat = mr.sharedMaterial;
+            if (mat == null)
+                continue;
+
+            // convert mesh matrices from original coordinate system into sourceRoot's:
+            CombineInstance ci = new CombineInstance
+            {
+                mesh = mf.sharedMesh,
+                transform = sourceRoot.transform.worldToLocalMatrix * child.localToWorldMatrix
+            };
+
+            // create a list for each material:
+            if (!combineInstancesByMat.TryGetValue(mat, out List<CombineInstance> list))
+            {
+                list = new List<CombineInstance>();
+                combineInstancesByMat.Add(mat, list);
+            }
+            list.Add(ci);
+        }
+
+        // create new mesh, combine and copy settings to it:
+        Dictionary<Material, GameObject> combinedMeshObjects = new Dictionary<Material, GameObject>();
+        foreach (KeyValuePair<Material, List<CombineInstance>> pair in combineInstancesByMat)
+        {
+            Material mat = pair.Key;
+            List<CombineInstance> instances = pair.Value;
+
+            Mesh combinedMesh = new Mesh();
+            combinedMesh.CombineMeshes(instances.ToArray(), true, true);
+
+            // new object to contain combined mesh and all it's settings
+            GameObject combinedChild = new GameObject(prefix + mat.name + "s");
+            combinedChild.transform.SetParent(sourceRoot.transform, false);
+
+            combinedChild.isStatic = true;
+            combinedChild.tag = tagToCombine;
+
+            // add components for combined mesh
+            MeshFilter mfCombined = combinedChild.AddComponent<MeshFilter>();
+            mfCombined.mesh = combinedMesh;
+            MeshRenderer mrCombined = combinedChild.AddComponent<MeshRenderer>();
+            mrCombined.material = mat;
+
+            combinedMeshObjects[mat] = combinedChild;
+        }
+
+        // copy colliders and create new empty objects to contain colliders, if the have non-zero rotation (to preserve it):
+        BoxCollider[] boxColliders = sourceRoot.GetComponentsInChildren<BoxCollider>(true);
+        foreach (BoxCollider originalBox in boxColliders)
+        {
+            // find object in collection by it's sharedMaterial:
+            MeshRenderer originalMR = originalBox.GetComponent<MeshRenderer>();
+            if (originalMR == null)
+                continue;
+            Material targetMat = originalMR.sharedMaterial;
+            if (targetMat == null || !combinedMeshObjects.ContainsKey(targetMat))
+                continue;
+            GameObject targetParent = combinedMeshObjects[targetMat];
+
+            Vector3 colliderWorldCenter = originalBox.transform.TransformPoint(originalBox.center);
+            Vector3 colliderWorldSize = Vector3.Scale(originalBox.size, originalBox.transform.lossyScale);
+
+            if (originalBox.transform.rotation == Quaternion.identity)
+            {
+                Vector3 localCenter = targetParent.transform.InverseTransformPoint(colliderWorldCenter);
+                BoxCollider newBox = targetParent.AddComponent<BoxCollider>();
+                newBox.center = localCenter;
+
+                // get local size, taking into account it's scale
+                Vector3 parentScale = targetParent.transform.lossyScale;
+                Vector3 localSize = new Vector3(
+                    colliderWorldSize.x / parentScale.x,
+                    colliderWorldSize.y / parentScale.y,
+                    colliderWorldSize.z / parentScale.z);
+                newBox.size = localSize;
+
+                newBox.isTrigger = originalBox.isTrigger;
+                newBox.material = originalBox.material;
+            }
+            else
+            {
+                // create a new object for rotated objects, to preserve their collider's rotation
+                GameObject colliderCopy = new GameObject(originalBox.gameObject.name + "Collider");
+                colliderCopy.transform.SetParent(targetParent.transform, true);
+
+                colliderCopy.transform.position = colliderWorldCenter;
+                colliderCopy.transform.rotation = originalBox.transform.rotation;
+                colliderCopy.transform.localScale = Vector3.one;
+
+                // set collider's world size and copy parameters:
+                BoxCollider newBox = colliderCopy.AddComponent<BoxCollider>();
+                newBox.center = Vector3.zero;
+                newBox.size = colliderWorldSize;
+                newBox.isTrigger = originalBox.isTrigger;
+                newBox.material = originalBox.material;
+            }
+        }
+
+        foreach (var go in objectsToCombine)
+        {
+            if (destroyOriginal)
+                DestroyImmediate(go);
+            else
+                go.SetActive(false);
+        }
+    }
 }
+

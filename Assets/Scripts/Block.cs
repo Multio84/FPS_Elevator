@@ -1,15 +1,13 @@
 using UnityEngine;
 
 
-public class Block
+public class Block : MonoBehaviour
 {
     public Floor[] Floors { get; private set; }
     public Elevator Elevator { get; private set; }
 
     public GameObject blockRoot;
-    GameObject basementPrefab;
     GameObject floorPrefab;
-    GameObject floorCombined;
     GameObject stairsPrefab;
     GameObject elevatorPrefab;
     public const float FloorHeight = 6f;
@@ -17,71 +15,67 @@ public class Block
     int elevatorStartFloor;
 
 
-    public Block(
-        GameObject blockRoot, 
-        GameObject basementPrefab, 
-        GameObject floorPrefab, 
-        GameObject stairsPrefab, 
-        GameObject elevatorPrefab, 
-        int floorsNumber, 
+    public void Init(
+        GameObject floorPrefab,
+        GameObject stairsPrefab,
+        GameObject elevatorPrefab,
+        int floorsNumber,
         int elevatorStartFloor
         )
     {
-        this.blockRoot = blockRoot;
-        this.basementPrefab = basementPrefab;
         this.floorPrefab = floorPrefab;
         this.stairsPrefab = stairsPrefab;
         this.elevatorPrefab = elevatorPrefab;
         this.floorsNumber = floorsNumber;
         this.elevatorStartFloor = elevatorStartFloor;
+    }
 
-        ConstructFloor();
+    public void Create()
+    {
         ConstructBlock();
         SpawnElevator();
         InitializeFloors();
     }
 
+    //TODO: разобраться с созданием лестниц, удалением объектов
+    //(пометить все, что для удаления как комбайн и добавлять в список все, что комбайн, даже без компонентов)
+
+
     void ConstructBlock()
     {
-        Object.Instantiate(basementPrefab, blockRoot.transform);
-
         Floors = new Floor[floorsNumber];
+        GameObject floorInstance = Instantiate(floorPrefab, transform);
 
         for (int i = 0; i < floorsNumber; i++)
         {
-            var floorObj = Object.Instantiate(floorCombined, blockRoot.transform);
-            floorObj.transform.position += new Vector3(0, i * FloorHeight, 0);
+            Vector3 floorPos = transform.position + new Vector3(0, i * FloorHeight, 0);
+            var floorObj = Instantiate(floorInstance, floorPos, transform.rotation);
+            floorObj.transform.SetParent(blockRoot.transform);
             floorObj.name = "Floor_" + i;
-            
-            Floors[i] = floorObj.GetComponent<Floor>();
 
-            //if (i < floorsNumber - 1)
-            //{
-            //    Object.Instantiate(stairsPrefab, floor.rootObj.transform);
-            //}
+            if (i < floorsNumber - 1)
+            {
+                Instantiate(stairsPrefab, floorObj.transform);
+            }
+
+            Floors[i] = floorObj.GetComponent<Floor>();
         }
 
-        Object.Destroy(floorCombined);
-    }
+        Destroy(floorInstance);
+        floorInstance = null;
 
-    void ConstructFloor()
-    {
-        floorCombined = Object.Instantiate(floorPrefab, blockRoot.transform);
-        Floor floor = floorCombined.GetComponent<Floor>();
-        Object.Instantiate(stairsPrefab, floor.rootObj.transform);
-
-        ObjectCombiner.CombineMeshes(floor.rootObj);
+        ObjectCombiner.Instance.CombineObjectsByTag(blockRoot, "Block");
     }
 
     void SpawnElevator()
     {
         var startpoint = Floors[elevatorStartFloor].elevatorStartpoint;
-        var elevatorObj = Object.Instantiate(elevatorPrefab, startpoint.position, Quaternion.identity, startpoint);
+        var elevatorObj = Instantiate(elevatorPrefab, startpoint.position, Quaternion.identity, startpoint);
         Elevator = elevatorObj.GetComponent<Elevator>();
         Elevator.block = this;
     }
 
-    // call it after elevator spawning
+    // call it after elevator spawn
     void InitializeFloors()
     {
         for (int i = 0; i < floorsNumber; i++)

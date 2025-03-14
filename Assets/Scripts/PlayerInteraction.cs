@@ -29,24 +29,18 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (isMenuMode) return;
 
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, interactDistance))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
-            if (interactable != null)
-            {
-                tooltip.SetActive(true);
+            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+            RaycastHit hit;
 
-                if (Input.GetKeyDown(KeyCode.E))
+            if (Physics.Raycast(ray, out hit, interactDistance))
+            {
+                IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
+                if (interactable != null)
                 {
                     interactable.Interact();
                 }
-            }
-            else
-            {
-                tooltip.SetActive(false);
             }
         }
     }
@@ -60,6 +54,7 @@ public class PlayerInteraction : MonoBehaviour
     void OnMenuInactive()
     {
         isMenuMode = false;
+        tooltip.SetActive(true);
     }
 
 }

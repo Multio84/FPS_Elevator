@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 544317180745032321}
   - component: {fileID: 362011085249976997}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Basement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,8 +114,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4982307458257984088}
+  - component: {fileID: 4604092139450174287}
   m_Layer: 0
-  m_Name: Basement
+  m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,3 +138,16 @@ Transform:
   - {fileID: 9175585750588579113}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4604092139450174287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9086542741549307638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c5c4f7cd7158d04ab7dcc47e94a1eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockRoot: {fileID: 9086542741549307638}

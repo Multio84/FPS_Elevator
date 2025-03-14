@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - Elevator
+  - Combine
   layers:
   - Default
   - TransparentFX
