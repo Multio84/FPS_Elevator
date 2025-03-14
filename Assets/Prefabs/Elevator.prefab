@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1118630056258885563}
   m_Layer: 0
   m_Name: Wall3
-  m_TagString: Untagged
+  m_TagString: Combine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,8 +31,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 3.5, z: -2.8}
   m_LocalScale: {x: 7.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3572746197790827610}
+  m_Children: []
   m_Father: {fileID: 1449302019339613268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1955095611283026756
@@ -120,7 +119,7 @@ GameObject:
   - component: {fileID: 1797073864821508372}
   m_Layer: 0
   m_Name: Wall2
-  m_TagString: Untagged
+  m_TagString: Combine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -396,7 +395,7 @@ GameObject:
   - component: {fileID: 4985168795686010703}
   m_Layer: 0
   m_Name: Wall1
-  m_TagString: Untagged
+  m_TagString: Combine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -515,12 +514,12 @@ Transform:
   m_GameObject: {fileID: 4320153733774952089}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: 0.13333334, y: -0.125, z: 0.483}
-  m_LocalScale: {x: 0.16563734, y: 0.62114, z: 0.19393854}
+  m_LocalPosition: {x: 1, y: 3.375, z: -2.5585}
+  m_LocalScale: {x: 1.2422801, y: 0.62114, z: 0.09696927}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9054704556828352618}
-  m_Father: {fileID: 7151727856723052986}
+  m_Father: {fileID: 1449302019339613268}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!33 &8675417074490923798
 MeshFilter:
@@ -903,6 +902,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3572746197790827610}
   - {fileID: 5307545482103649980}
   - {fileID: 1769499678970676746}
   - {fileID: 6837516817400563662}
@@ -926,5 +926,6 @@ MonoBehaviour:
   buttonsStartpoint: {fileID: 6837516817400563662}
   elevatorButtonPrefab: {fileID: 6579538839396500380, guid: 9abbc4ab5609a064fbd99cb1da5df5d9, type: 3}
   currentFloorText: {fileID: 7098925497398952314}
+  block: {fileID: 0}
   currentFloor: 0
   isMoving: 0

@@ -37,10 +37,6 @@ public class Block : MonoBehaviour
         InitializeFloors();
     }
 
-    //TODO: разобраться с созданием лестниц, удалением объектов
-    //(пометить все, что для удаления как комбайн и добавлять в список все, что комбайн, даже без компонентов)
-
-
     void ConstructBlock()
     {
         Floors = new Floor[floorsNumber];
@@ -64,13 +60,15 @@ public class Block : MonoBehaviour
         Destroy(floorInstance);
         floorInstance = null;
 
-        ObjectCombiner.Instance.CombineObjectsByTag(blockRoot, "Block");
+        ObjectCombiner.CombineObjectsByTag(blockRoot, "Block");
     }
 
     void SpawnElevator()
     {
         var startpoint = Floors[elevatorStartFloor].elevatorStartpoint;
         var elevatorObj = Instantiate(elevatorPrefab, startpoint.position, Quaternion.identity, startpoint);
+        ObjectCombiner.CombineObjectsByTag(elevatorObj);
+        
         Elevator = elevatorObj.GetComponent<Elevator>();
         Elevator.block = this;
     }

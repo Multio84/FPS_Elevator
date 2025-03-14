@@ -51,14 +51,12 @@ public abstract class Button : MonoBehaviour, IInteractable
     public void TurnOff()
     {
         Press(false);
-
         isPressed = false;
     }
 
     IEnumerator UnpressWithDelay()
     {
         yield return new WaitForSeconds(AutoTurnOffTime);
-
         Press(false);
     }
 

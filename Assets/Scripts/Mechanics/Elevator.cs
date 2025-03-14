@@ -38,6 +38,8 @@ public class Elevator : MonoBehaviour
             buttonObj.name = "Button_" + floor;
             buttonObj.transform.localPosition = buttonPosition;
 
+            ObjectCombiner.CombineObjectsByTag(buttonsStartpoint.gameObject);
+
             ElevatorButton button = buttonObj.GetComponent<ElevatorButton>();
             button.elevator = this;
             button.floorNumber = floor;

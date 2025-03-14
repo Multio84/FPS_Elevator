@@ -10,7 +10,6 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] Transform buildingRoot;
     [SerializeField] GameObject blockPrefab;
     [SerializeField] GameObject floorPrefab;
-    //[SerializeField] GameObject basementPrefab;
     [SerializeField] GameObject stairsPrefab;
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject elevatorPrefab;
@@ -19,17 +18,18 @@ public class LevelGenerator : MonoBehaviour
     public const float BlockWidth = 16f;
     public const int MinBlocks = 1;
     public const int MaxBlocks = 10;
-    public int blocksNumber = 2;
     public const int MinFloor = 0;
     public const int MaxFloor = 99;
-    //[Range(MinFloor + 2, MaxFloor + 1)] public int floorsNumber = 2;
+    public int blocksNumber = 2;
     public int floorsNumber = 2;
-    //[Tooltip("The Floor you will start from.\nFloors are numbered starting from zero")]
     public int playerStartFloor = 0;
-    //[Tooltip("The Floor elevator will be spawned.\nFloors are numbered starting from zero")]
     public int elevatorStartFloor = 0;
+    //[Range(MinFloor + 2, MaxFloor + 1)] public int floorsNumber = 2;
+    //[Tooltip("The Floor you will start from.\nFloors are numbered starting from zero")]
+    //[Tooltip("The Floor elevator will be spawned.\nFloors are numbered starting from zero")]
 
     GameObject[] building;
+
 
     //void OnValidate()
     //{

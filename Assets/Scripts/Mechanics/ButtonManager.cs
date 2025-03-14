@@ -1,5 +1,4 @@
 
-
 public static class ButtonManager
 {
     public static Button pressedButton;

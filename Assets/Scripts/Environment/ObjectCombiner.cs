@@ -1,21 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
-using System.Threading.Tasks;
 
 
-[DefaultExecutionOrder(-20)]
 public class ObjectCombiner : MonoBehaviour
 {
-    public static ObjectCombiner Instance;
     public static string tagToCombine = "Combine";
 
-
-    void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
 
     /// <summary>
     /// Combines the tagged as 'tagToCombine' child objects of the sourceRoot into one, 
@@ -25,20 +15,18 @@ public class ObjectCombiner : MonoBehaviour
     /// </summary>
     /// <param name="sourceRoot">Parent object, whose childs will be combined.</param>
     /// <param name="prefix">Name prefix of the new combined object</param>
-    /// <param name="destroyOriginal">Destroys the original objects, if true, else - disables them.</param>
-    public void CombineObjectsByTag(GameObject sourceRoot, string prefix, bool destroyOriginal = true)
+    /// <param name="destroyOriginals">Destroys the original objects, if true, else - disables them.</param>
+    public static void CombineObjectsByTag(GameObject sourceRoot, string prefix = "", bool destroyOriginals = true)
     {
-        // original objects to delete/disable in th end
-        List<GameObject> objectsToCombine = new List<GameObject>();
-        // objects to combine
-        var combineInstancesByMat = new Dictionary<Material, List<CombineInstance>>();
+        List<GameObject> objectsToDestroy = new List<GameObject>();
+        var combineInstancesByMat = new Dictionary<Material, List<CombineInstance>>(); // objects to combine
         Transform[] children = sourceRoot.GetComponentsInChildren<Transform>(true);
 
         foreach (Transform child in children)
         {
             if (!child.CompareTag(tagToCombine) || child == sourceRoot.transform)
                 continue;
-            objectsToCombine.Add(child.gameObject); // add all objects that have the correct tag
+            objectsToDestroy.Add(child.gameObject); // add all objects that have the correct tag
 
             MeshFilter mf = child.GetComponent<MeshFilter>();
             if (mf == null || mf.sharedMesh == null)
@@ -144,9 +132,9 @@ public class ObjectCombiner : MonoBehaviour
             }
         }
 
-        foreach (var go in objectsToCombine)
+        foreach (var go in objectsToDestroy)
         {
-            if (destroyOriginal)
+            if (destroyOriginals)
                 DestroyImmediate(go);
             else
                 go.SetActive(false);

@@ -34,18 +34,17 @@ public class GameManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+        UIManager.Instance.OnMenuActive += OnMenuActive;
+        UIManager.Instance.OnMenuInactive += OnMenuInactive;
+
         GenerateGame();
         PauseGame(true);
     }
 
-    private void Start()
-    {
-        SubscribeToUIManager();
-    }
-
     private void OnDisable()
     {
-        UnsubscribeFromUIManager();
+        UIManager.Instance.OnMenuActive -= OnMenuActive;
+        UIManager.Instance.OnMenuInactive -= OnMenuInactive;
     }
 
     public void GenerateGame()
@@ -65,33 +64,20 @@ public class GameManager : MonoBehaviour
         player.transform.SetParent(null);
     }
 
-    void SubscribeToUIManager()
-    {
-        UIManager.Instance.OnMenuActive += OnMenuActive;
-        UIManager.Instance.OnMenuInactive += OnMenuInactive;
-    }
-
-    void UnsubscribeFromUIManager()
-    {
-        UIManager.Instance.OnMenuActive -= OnMenuActive;
-        UIManager.Instance.OnMenuInactive -= OnMenuInactive;
-    }
-
     void OnMenuActive()
     {
-        IsCursorActive = true;
         PauseGame(true);
     }
 
     void OnMenuInactive()
     {
-        IsCursorActive = false;
         PauseGame(false);
     }
 
     public void PauseGame(bool pause)
     {
-        //Time.timeScale = pause ? 0f : 1f;
+        IsCursorActive = pause;
+        Time.timeScale = pause ? 0f : 1f;
 
         var playerInput = player.GetComponent<PlayerInput>();
         if (playerInput != null)
