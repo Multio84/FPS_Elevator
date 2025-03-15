@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public SettingsManager settingsManager;
     public static GameObject player;
     bool isCursorActive;
     bool IsCursorActive
@@ -31,17 +32,23 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
 
         UIManager.Instance.OnMenuActive += OnMenuActive;
         UIManager.Instance.OnMenuInactive += OnMenuInactive;
+
+        settingsManager.Init();
 
         GenerateGame();
         PauseGame(true);
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         UIManager.Instance.OnMenuActive -= OnMenuActive;
         UIManager.Instance.OnMenuInactive -= OnMenuInactive;
@@ -52,7 +59,10 @@ public class GameManager : MonoBehaviour
         LevelGenerator.Instance.GenerateLevel();
 
         if (player == null)
+        {
             player = LevelGenerator.Instance.SpawnPlayer();
+            player.GetComponent<PlayerInitalizer>().Init();
+        }
         else
             DetachPlayer();
 

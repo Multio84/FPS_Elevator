@@ -13,12 +13,12 @@ public class Floor : MonoBehaviour
     [SerializeField] TextMeshPro elevatorCurrentFloorText;
 
 
-    private void Start()
+    void Start()
     {
         SetElevatorCurrentFloorText();
     }
 
-    private void Update()
+    void Update()
     {
         if (elevator.isMoving)
             SetElevatorCurrentFloorText();

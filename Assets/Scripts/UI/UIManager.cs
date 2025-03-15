@@ -5,7 +5,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-20)]
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance;
+    public static UIManager Instance { get; private set; }
 
     [SerializeField] GameObject menu;
     bool isMenuActive = true;
@@ -16,13 +16,15 @@ public class UIManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
+        if (Instance != null && Instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
 
-    private void Update()
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {

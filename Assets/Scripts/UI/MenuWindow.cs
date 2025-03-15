@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using static UnityEngine.Rendering.DebugUI;
 
 
 public class MenuWindow : MonoBehaviour
@@ -30,8 +32,11 @@ public class MenuWindow : MonoBehaviour
     [SerializeField] UnityEngine.UI.Button generateButton;
     [SerializeField] UnityEngine.UI.Button quitButton;
 
+    [SerializeField] Slider sensitivitySlider;
+    [SerializeField] TMP_Text sensitivityTextValue;
 
-    private void Start()
+
+    void OnEnable()
     {
         generator = LevelGenerator.Instance;
 
@@ -53,9 +58,35 @@ public class MenuWindow : MonoBehaviour
 
         generateButton.onClick.AddListener(OnGenerateButtonPressed);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
+
+        sensitivitySlider.maxValue = SettingsManager.MaxMouseSensitivity;
+        sensitivitySlider.minValue = SettingsManager.MinMouseSensitivity;
+        sensitivitySlider.value = SettingsManager.Instance.MouseSensitivity;
+        sensitivitySlider.onValueChanged.AddListener(OnSensitivitySliderChanged);
+        SetSensitivityTextValue(sensitivitySlider.value);
     }
 
-    private void InitProperty(Slider slider, TMP_InputField inputField, int min, int max, int defaultValue)
+    void OnDisable()
+    {
+        floorsSlider.onValueChanged.RemoveListener(OnFloorsSliderChanged);
+        floorsInput.onEndEdit.RemoveListener(OnFloorsInputFieldChanged);
+
+        playerStartSlider.onValueChanged.RemoveListener(OnPlayerStartSliderChanged);
+        playerStartInput.onEndEdit.RemoveListener(OnPlayerStartInputFieldChanged);
+
+        elevatorStartSlider.onValueChanged.RemoveListener(OnElevatorStartSliderChanged);
+        elevatorStartInput.onEndEdit.RemoveListener(OnElevatorStartInputFieldChanged);
+
+        elevatorsSlider.onValueChanged.RemoveListener(OnElevatorsSliderChanged);
+        elevatorsInput.onEndEdit.RemoveListener(OnElevatorsInputFieldChanged);
+
+        generateButton.onClick.RemoveListener(OnGenerateButtonPressed);
+        quitButton.onClick.RemoveListener(OnQuitButtonPressed);
+
+        sensitivitySlider.onValueChanged.RemoveListener(OnSensitivitySliderChanged);
+    }
+
+    void InitProperty(Slider slider, TMP_InputField inputField, int min, int max, int defaultValue)
     {
         slider.minValue = min;
         slider.maxValue = max;
@@ -144,6 +175,17 @@ public class MenuWindow : MonoBehaviour
     {
         GameManager.Instance.GenerateGame();
         UIManager.Instance.SetMenuActive(false);
+    }
+
+    void OnSensitivitySliderChanged(float value)
+    {
+        SetSensitivityTextValue(value);
+        SettingsManager.Instance.MouseSensitivity = value;
+    }
+
+    void SetSensitivityTextValue(float value)
+    { 
+        sensitivityTextValue.text = ((float)Math.Round(value, 1)).ToString();
     }
 
     void OnQuitButtonPressed()

@@ -4,7 +4,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-20)]
 public class LevelGenerator : MonoBehaviour
 {
-    public static LevelGenerator Instance;
+    public static LevelGenerator Instance { get; private set; }
 
     [Header("Generation Objects")]
     [SerializeField] Transform buildingRoot;
@@ -37,13 +37,14 @@ public class LevelGenerator : MonoBehaviour
     //    elevatorStartFloor = Mathf.Clamp(elevatorStartFloor, MinFloor, floorsNumber - 1);
     //}
 
-
     void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
+        if (Instance != null && Instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
 
     public void GenerateLevel()
