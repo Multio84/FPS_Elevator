@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
             DetachPlayer();
 
         LevelGenerator.Instance.PlacePlayer(player);
+
+        UIManager.Instance.SetMenuActive(false);
     }
 
     void DetachPlayer()

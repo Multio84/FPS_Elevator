@@ -45,11 +45,11 @@ public class UIManager : MonoBehaviour
         isMenuActive = isActive;
         if (isActive)
         {
-            OnMenuActive.Invoke();
+            OnMenuActive?.Invoke();
         }
         else
         {
-            OnMenuInactive.Invoke();
+            OnMenuInactive?.Invoke();
         }
     }
 }

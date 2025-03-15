@@ -56,7 +56,7 @@ public class MenuWindow : MonoBehaviour
         elevatorsSlider.onValueChanged.AddListener(OnElevatorsSliderChanged);
         elevatorsInput.onEndEdit.AddListener(OnElevatorsInputFieldChanged);
 
-        generateButton.onClick.AddListener(OnGenerateButtonPressed);
+        generateButton.onClick.AddListener(GameManager.Instance.GenerateGame);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
 
         sensitivitySlider.maxValue = SettingsManager.MaxMouseSensitivity;
@@ -80,7 +80,7 @@ public class MenuWindow : MonoBehaviour
         elevatorsSlider.onValueChanged.RemoveListener(OnElevatorsSliderChanged);
         elevatorsInput.onEndEdit.RemoveListener(OnElevatorsInputFieldChanged);
 
-        generateButton.onClick.RemoveListener(OnGenerateButtonPressed);
+        generateButton.onClick.RemoveListener(GameManager.Instance.GenerateGame);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
 
         sensitivitySlider.onValueChanged.RemoveListener(OnSensitivitySliderChanged);
@@ -169,12 +169,6 @@ public class MenuWindow : MonoBehaviour
         }
 
         return intValue;
-    }
-
-    void OnGenerateButtonPressed()
-    {
-        GameManager.Instance.GenerateGame();
-        UIManager.Instance.SetMenuActive(false);
     }
 
     void OnSensitivitySliderChanged(float value)
