@@ -67,7 +67,7 @@ public class Block : MonoBehaviour
     {
         var startpoint = Floors[elevatorStartFloor].elevatorStartpoint;
         var elevatorObj = Instantiate(elevatorPrefab, startpoint.position, Quaternion.identity, startpoint);
-        ObjectCombiner.CombineObjectsByTag(elevatorObj);
+        ObjectCombiner.CombineObjectsByTag(elevatorObj, "", false);
         
         Elevator = elevatorObj.GetComponent<Elevator>();
         Elevator.block = this;

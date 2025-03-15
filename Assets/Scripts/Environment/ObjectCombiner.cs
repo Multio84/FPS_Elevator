@@ -16,7 +16,7 @@ public class ObjectCombiner : MonoBehaviour
     /// <param name="sourceRoot">Parent object, whose childs will be combined.</param>
     /// <param name="prefix">Name prefix of the new combined object</param>
     /// <param name="destroyOriginals">Destroys the original objects, if true, else - disables them.</param>
-    public static void CombineObjectsByTag(GameObject sourceRoot, string prefix = "", bool destroyOriginals = true)
+    public static void CombineObjectsByTag(GameObject sourceRoot, string prefix = "", bool makeStatic = true, bool destroyOriginals = true)
     {
         List<GameObject> objectsToDestroy = new List<GameObject>();
         var combineInstancesByMat = new Dictionary<Material, List<CombineInstance>>(); // objects to combine
@@ -68,7 +68,7 @@ public class ObjectCombiner : MonoBehaviour
             GameObject combinedChild = new GameObject(prefix + mat.name + "s");
             combinedChild.transform.SetParent(sourceRoot.transform, false);
 
-            combinedChild.isStatic = true;
+            if (makeStatic) combinedChild.isStatic = true;
             combinedChild.tag = tagToCombine;
 
             // add components for combined mesh
