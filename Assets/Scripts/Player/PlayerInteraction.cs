@@ -11,9 +11,9 @@ public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] float interactDistance = 3f;
     [SerializeField] GameObject tooltip;
-    bool isMenuMode = true;
+    bool isMenuMode;
 
-    void Start()
+    void Awake()
     {
         UIController.Instance.OnMenuActive += OnMenuActive;
         UIController.Instance.OnMenuInactive += OnMenuInactive;

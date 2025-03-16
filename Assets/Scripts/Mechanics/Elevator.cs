@@ -11,7 +11,7 @@ public class Elevator : MonoBehaviour
     [SerializeField] TextMeshPro currentFloorText;
     float verticalButtonSpacing = 0.185f;
     float horizontalButtonSpacing = 0.24f;
-    float acceleration = 5f;
+    float acceleration = 10f;
     public Block block;    // the block to which the elevator belongs
     public int currentFloor = 0;
     public bool isMoving = false;
