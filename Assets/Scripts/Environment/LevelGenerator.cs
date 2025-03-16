@@ -20,10 +20,10 @@ public class LevelGenerator : MonoBehaviour
     public const int MaxBlocks = 10;
     public const int MinFloor = 0;
     public const int MaxFloor = 99;
-    public int blocksNumber = 2;
-    public int floorsNumber = 2;
-    public int playerStartFloor = 0;
-    public int elevatorStartFloor = 0;
+    public static int blocksNumber = 2;
+    public static int floorsNumber = 2;
+    public static int playerStartFloor = 0;
+    public static int elevatorStartFloor = 1;
     //[Range(MinFloor + 2, MaxFloor + 1)] public int floorsNumber = 2;
     //[Tooltip("The Floor you will start from.\nFloors are numbered starting from zero")]
     //[Tooltip("The Floor elevator will be spawned.\nFloors are numbered starting from zero")]

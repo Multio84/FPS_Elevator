@@ -9,7 +9,7 @@ public abstract class Button : MonoBehaviour, IInteractable
     [SerializeField] Material offMat;
     [SerializeField] Material onMat;
     // seconds, before button turns off, if it can't be turned on
-    const float AutoTurnOffTime = 0.65f;
+    const float AutoTurnOffTime = 0.5f;
     MeshRenderer meshRenderer;
     Vector3 offPos;
     Vector3 onPos;

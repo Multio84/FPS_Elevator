@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Elevator : MonoBehaviour
 {
-    LevelGenerator generator;
     [SerializeField] Transform buttonsStartpoint;
     [SerializeField] GameObject elevatorButtonPrefab;
     [SerializeField] TextMeshPro currentFloorText;
@@ -19,14 +18,13 @@ public class Elevator : MonoBehaviour
 
     void Awake()
     {
-        generator = LevelGenerator.Instance;
         UpdateCurrentFloor();
         SpawnButtons();
     }
 
     public void SpawnButtons()
     {
-        int totalFloors = generator.floorsNumber;
+        int totalFloors = LevelGenerator.floorsNumber;
 
         for (int floor = 0; floor < totalFloors; floor++)
         {
