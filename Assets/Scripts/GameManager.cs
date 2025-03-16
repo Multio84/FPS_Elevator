@@ -1,4 +1,3 @@
-using StarterAssets;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,27 +6,9 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public SettingsManager settingsManager;
+    [SerializeField] SettingsManager settingsManager;
     public static GameObject player;
-    bool isCursorActive;
-    bool IsCursorActive
-    {
-        get => isCursorActive;
-        set
-        {
-            isCursorActive = value;
-            MyStarterAssetsInputs inputs = null;
-            if (player != null)
-                inputs = player.GetComponent<MyStarterAssetsInputs>();
-
-            if (inputs != null)
-            {
-                inputs.cursorLocked = !value;
-                inputs.cursorInputForLook = !value;
-                Cursor.visible = value;
-            }
-        }
-    }
+    PlayerInput playerInput;
 
 
     void Awake()
@@ -39,36 +20,51 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
 
-        UIManager.Instance.OnMenuActive += OnMenuActive;
-        UIManager.Instance.OnMenuInactive += OnMenuInactive;
-
-        settingsManager.Init();
-
-        GenerateGame();
-        PauseGame(true);
+        StartGame();
     }
 
     void OnDisable()
     {
-        UIManager.Instance.OnMenuActive -= OnMenuActive;
-        UIManager.Instance.OnMenuInactive -= OnMenuInactive;
+        UIController.Instance.OnMenuActive -= OnMenuActive;
+        UIController.Instance.OnMenuInactive -= OnMenuInactive;
     }
 
-    public void GenerateGame()
+    void StartGame()
+    {
+        settingsManager.Init();
+
+        CreateGame();
+
+        UIController.Instance.OnMenuActive += OnMenuActive;
+        UIController.Instance.OnMenuInactive += OnMenuInactive;
+        UIController.Instance.SetMenuActive(false);
+    }
+
+    public void CreateGame()
     {
         LevelGenerator.Instance.GenerateLevel();
 
         if (player == null)
-        {
-            player = LevelGenerator.Instance.SpawnPlayer();
-            player.GetComponent<PlayerInitalizer>().Init();
-        }
+            CreatePlayer();
         else
+        {
             DetachPlayer();
+            UIController.Instance.SetMenuActive(false);
+        }    
 
         LevelGenerator.Instance.PlacePlayer(player);
+    }
 
-        UIManager.Instance.SetMenuActive(false);
+    void CreatePlayer()
+    {
+        player = LevelGenerator.Instance.SpawnPlayer();
+        if (player is null)
+        {
+            Debug.LogError("Player wasn't created.");
+        }
+
+        player.GetComponent<PlayerInitalizer>().Init();
+        playerInput = player.GetComponent<PlayerInput>();
     }
 
     void DetachPlayer()
@@ -86,18 +82,19 @@ public class GameManager : MonoBehaviour
         PauseGame(false);
     }
 
-    public void PauseGame(bool pause)
+    void PauseGame(bool pause)
     {
-        IsCursorActive = pause;
         Time.timeScale = pause ? 0f : 1f;
 
-        var playerInput = player.GetComponent<PlayerInput>();
-        if (playerInput != null)
+        if (pause)
+        { 
+            playerInput.DeactivateInput();
+            CursorController.Instance.SetMenuCursor();
+        }
+        else
         {
-            if (pause)
-                playerInput.DeactivateInput();
-            else
-                playerInput.ActivateInput();
+            playerInput.ActivateInput();
+            CursorController.Instance.SetGameCursor();
         }
     }
 

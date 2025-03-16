@@ -3,9 +3,9 @@ using UnityEngine;
 
 
 [DefaultExecutionOrder(-20)]
-public class UIManager : MonoBehaviour
+public class UIController : MonoBehaviour
 {
-    public static UIManager Instance { get; private set; }
+    public static UIController Instance { get; private set; }
 
     [SerializeField] GameObject menu;
     bool isMenuActive = true;

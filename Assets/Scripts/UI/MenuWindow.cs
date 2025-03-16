@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-using static UnityEngine.Rendering.DebugUI;
 
 
 public class MenuWindow : MonoBehaviour
@@ -56,7 +55,7 @@ public class MenuWindow : MonoBehaviour
         elevatorsSlider.onValueChanged.AddListener(OnElevatorsSliderChanged);
         elevatorsInput.onEndEdit.AddListener(OnElevatorsInputFieldChanged);
 
-        generateButton.onClick.AddListener(GameManager.Instance.GenerateGame);
+        generateButton.onClick.AddListener(GameManager.Instance.CreateGame);
         quitButton.onClick.AddListener(OnQuitButtonPressed);
 
         sensitivitySlider.maxValue = SettingsManager.MaxMouseSensitivity;
@@ -80,7 +79,7 @@ public class MenuWindow : MonoBehaviour
         elevatorsSlider.onValueChanged.RemoveListener(OnElevatorsSliderChanged);
         elevatorsInput.onEndEdit.RemoveListener(OnElevatorsInputFieldChanged);
 
-        generateButton.onClick.RemoveListener(GameManager.Instance.GenerateGame);
+        generateButton.onClick.RemoveListener(GameManager.Instance.CreateGame);
         quitButton.onClick.RemoveListener(OnQuitButtonPressed);
 
         sensitivitySlider.onValueChanged.RemoveListener(OnSensitivitySliderChanged);

@@ -5,6 +5,7 @@ public class PlayerElevatorAttachment : MonoBehaviour
 {   
     public Transform player;
 
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Elevator"))

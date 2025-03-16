@@ -15,14 +15,14 @@ public class PlayerInteraction : MonoBehaviour
 
     void Start()
     {
-        UIManager.Instance.OnMenuActive += OnMenuActive;
-        UIManager.Instance.OnMenuInactive += OnMenuInactive;
+        UIController.Instance.OnMenuActive += OnMenuActive;
+        UIController.Instance.OnMenuInactive += OnMenuInactive;
     }
 
     void OnDisable()
     {
-        UIManager.Instance.OnMenuActive -= OnMenuActive;
-        UIManager.Instance.OnMenuInactive -= OnMenuInactive;
+        UIController.Instance.OnMenuActive -= OnMenuActive;
+        UIController.Instance.OnMenuInactive -= OnMenuInactive;
     }
 
     void Update()
