@@ -1282,7 +1282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c538ed0ba3c554da30016a4fb6fca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structureRoot: {fileID: 876821006129062236}
   playerStartpoint: {fileID: 4950888693596542171}
   elevatorStartpoint: {fileID: 3078820957486056307}
   floorCallButton: {fileID: 1397645495851877379}
