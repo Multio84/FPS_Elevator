@@ -43,8 +43,8 @@ public abstract class Button : MonoBehaviour, IInteractable
         }
 
         isPressed = true;
-
-        ButtonManager.pressedButton = this;
+        
+        elevator.OnArrived += OnElevatorArrived;
         StartElevator();
     }
 
@@ -79,6 +79,15 @@ public abstract class Button : MonoBehaviour, IInteractable
     void StartElevator()
     {
         elevator.MoveTo(floorNumber);
+    }
+
+    void OnElevatorArrived()
+    {
+        if (IsElevatorOnTheFloor())
+        {
+            TurnOff();
+            elevator.OnArrived -= OnElevatorArrived;
+        }
     }
 
     bool IsElevatorOnTheFloor()

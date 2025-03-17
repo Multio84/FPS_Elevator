@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class Elevator : MonoBehaviour
     public Block block;    // the block to which the elevator belongs
     public int currentFloor = 0;
     public bool isMoving = false;
+
+    public Action OnArrived;
 
 
     void Awake()
@@ -93,7 +96,7 @@ public class Elevator : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
-        ButtonManager.TurnOffPressedButton();
+        OnArrived?.Invoke();
     }
 }
 
