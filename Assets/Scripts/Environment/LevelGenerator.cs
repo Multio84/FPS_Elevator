@@ -92,7 +92,9 @@ public class LevelGenerator : MonoBehaviour
 
     public void PlacePlayer(GameObject player)
     {
-        player.transform.position = building[0].GetComponent<Block>().Floors[playerStartFloor].playerStartpoint.position;
+        Block block = building[0].GetComponent<Block>();
+        player.transform.position = block.Floors[playerStartFloor].playerStartpoint.position;
+        player.transform.rotation = Quaternion.identity;
     }
 
 }

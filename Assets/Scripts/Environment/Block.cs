@@ -40,15 +40,14 @@ public class Block : MonoBehaviour
     void ConstructBlock()
     {
         Floors = new Floor[floorsNumber];
-        GameObject floorInstance = Instantiate(floorPrefab, transform);
 
         for (int i = 0; i < floorsNumber; i++)
         {
             Vector3 floorPos = transform.position + new Vector3(0, i * FloorHeight, 0);
-            var floorObj = Instantiate(floorInstance, floorPos, transform.rotation);
+            var floorObj = Instantiate(floorPrefab, floorPos, transform.rotation);
             floorObj.transform.SetParent(blockRoot.transform);
             floorObj.name = "Floor_" + i;
-
+            
             if (i < floorsNumber - 1)
             {
                 Instantiate(stairsPrefab, floorObj.transform);
@@ -56,9 +55,6 @@ public class Block : MonoBehaviour
 
             Floors[i] = floorObj.GetComponent<Floor>();
         }
-
-        Destroy(floorInstance);
-        floorInstance = null;
 
         ObjectCombiner.CombineObjectsByTag(blockRoot, "Block");
     }

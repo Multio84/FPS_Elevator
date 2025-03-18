@@ -59,9 +59,7 @@ public class GameManager : MonoBehaviour
     {
         player = LevelGenerator.Instance.SpawnPlayer();
         if (player is null)
-        {
             Debug.LogError("Player wasn't created.");
-        }
 
         player.GetComponent<PlayerInitalizer>().Init();
         playerInput = player.GetComponent<PlayerInput>();

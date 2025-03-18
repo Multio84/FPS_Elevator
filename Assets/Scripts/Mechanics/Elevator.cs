@@ -9,12 +9,12 @@ public class Elevator : MonoBehaviour
     [SerializeField] Transform buttonsStartpoint;
     [SerializeField] GameObject elevatorButtonPrefab;
     [SerializeField] TextMeshPro currentFloorText;
-    float verticalButtonSpacing = 0.185f;
-    float horizontalButtonSpacing = 0.24f;
-    float acceleration = 10f;
-    public Block block;    // the block to which the elevator belongs
-    public int currentFloor = 0;
-    public bool isMoving = false;
+    const float VerticalButtonSpacing = 0.185f;
+    const float HorizontalButtonSpacing = 0.24f;
+    const float Acceleration = 10f;
+    [HideInInspector] public Block block;    // the block to which the elevator belongs
+    [HideInInspector] public int currentFloor = 0;
+    [HideInInspector] public bool isMoving = false;
 
     public Action OnArrived;
 
@@ -25,7 +25,7 @@ public class Elevator : MonoBehaviour
         SpawnButtons();
     }
 
-    public void SpawnButtons()
+    void SpawnButtons()
     {
         int totalFloors = LevelGenerator.floorsNumber;
 
@@ -33,7 +33,7 @@ public class Elevator : MonoBehaviour
         {
             int column = floor / 10;
             int row = floor % 10;
-            Vector3 buttonPosition = new Vector3(column * horizontalButtonSpacing, row * verticalButtonSpacing, 0f);
+            Vector3 buttonPosition = new Vector3(column * HorizontalButtonSpacing, row * VerticalButtonSpacing, 0f);
 
             GameObject buttonObj = Instantiate(elevatorButtonPrefab, buttonsStartpoint);
             buttonObj.name = "Button_" + floor;
@@ -68,7 +68,7 @@ public class Elevator : MonoBehaviour
         currentFloorText.text = currentFloor.ToString();
     }
 
-    public IEnumerator AnimateElevator(Transform target)
+    IEnumerator AnimateElevator(Transform target)
     {
         Vector3 startPos = transform.position;
         Vector3 targetPos = new Vector3(startPos.x, target.position.y, startPos.z);
@@ -77,7 +77,7 @@ public class Elevator : MonoBehaviour
         if (distance < 0.001f)
             yield break;
 
-        float duration = 2f * Mathf.Sqrt(distance / acceleration);
+        float duration = 2f * Mathf.Sqrt(distance / Acceleration);
         float elapsed = 0f;
 
         while (elapsed < duration)
