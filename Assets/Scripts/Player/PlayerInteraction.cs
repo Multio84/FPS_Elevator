@@ -10,7 +10,7 @@ public interface IInteractable
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] float interactDistance = 3f;
-    [SerializeField] GameObject tooltip;
+    [SerializeField] GameObject tooltips;
     bool isMenuMode;
 
     void Awake()
@@ -48,13 +48,13 @@ public class PlayerInteraction : MonoBehaviour
     void OnMenuActive()
     {
         isMenuMode = true;
-        tooltip.SetActive(false);
+        tooltips.SetActive(false);
     }
 
     void OnMenuInactive()
     {
         isMenuMode = false;
-        tooltip.SetActive(true);
+        tooltips.SetActive(true);
     }
 
 }

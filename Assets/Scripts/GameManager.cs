@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     void OnDisable()
     {
+        if (player != null) player.GetComponent<PlayerDeath>().OnDeath -= OnPlayerDeath;
         UIController.Instance.OnMenuActive -= OnMenuActive;
         UIController.Instance.OnMenuInactive -= OnMenuInactive;
     }
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
 
         CreateGame();
 
+        player.GetComponent<PlayerDeath>().OnDeath += OnPlayerDeath;
         UIController.Instance.OnMenuActive += OnMenuActive;
         UIController.Instance.OnMenuInactive += OnMenuInactive;
         UIController.Instance.SetMenuActive(false);
@@ -68,6 +70,11 @@ public class GameManager : MonoBehaviour
     void DetachPlayer()
     {
         player.transform.SetParent(null);
+    }
+
+    void OnPlayerDeath()
+    {
+        LevelGenerator.Instance.PlacePlayer(player);
     }
 
     void OnMenuActive()

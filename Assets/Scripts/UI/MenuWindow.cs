@@ -181,7 +181,6 @@ public class MenuWindow : MonoBehaviour
     void OnQuitButtonPressed()
     {
         Application.Quit();
-        Debug.Log("Quit button pressed.");
     }
 
 }
