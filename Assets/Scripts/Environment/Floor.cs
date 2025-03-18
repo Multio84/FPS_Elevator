@@ -27,7 +27,7 @@ public class Floor : MonoBehaviour
     public void SetNumber(int number)
     {
         this.number = number;
-        numberText.text = "Level " + number.ToString();
+        numberText.text = "floor " + number.ToString();
     }
 
     public void SetElevatorCurrentFloorText()
